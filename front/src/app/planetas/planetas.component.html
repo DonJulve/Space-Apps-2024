@@ -1,0 +1,32 @@
+<div *ngIf="menuVisible" class="menu" [ngClass]="{'slide-in': menuVisible}">
+  <div class="parametros-container">
+    <form (ngSubmit)="submit()">
+      <input type="text" id="lente" [(ngModel)]="lente" name="lente" placeholder="Amplitud de la lente (m)">
+      <input type="text" id="habitabilidad" [(ngModel)]="habitabilidad" name="habitabilidad" placeholder="% de habitabilidad">
+      <input type="text" id="distanciaTierra" [(ngModel)]="distanciaTierra" name="distanciaTierra" placeholder="Distancia de la Tierra (m)">
+      <input type="text" id="proporcionGravedad" [(ngModel)]="proporcionGravedad" name="proporcionGravedad" placeholder="Aumento gravedad terrestre">
+      <button type="submit">Buscar exoplanetas</button>
+      <button (click)="limpiar()">Limpiar parámetros</button>
+    </form>
+  </div>
+</div>
+
+<button class="imagen-boton" (click)="alternarMenu()">
+  <img src="assets/Telescopio.png" alt="Telescopio"/>
+</button>
+
+<div class="bitacora">
+  <img src="assets/Bitacora.png" alt="Bitacora"/>
+</div>
+
+<div class="ranking">
+  <button class="arrow left" (click)="moveLeft()">&lt;</button>
+  <span class="center-text">Tierra</span>
+  <button class="arrow right" (click)="moveRight()">&gt;</button>
+</div>
+
+
+<div class="iframe-container">
+  <iframe src="https://eyes.nasa.gov/apps/exo/#/planet/HD_21520_b" title="" class="smd-iframe-iframe margin-left-auto margin-right-auto border-0" allow="fullscreen"></iframe>
+</div>
+
