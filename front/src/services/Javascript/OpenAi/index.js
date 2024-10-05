@@ -1,15 +1,15 @@
-import OpenAI from "openai";
+import OpenAI from "openai/index.mjs";
 import fs from "fs";
 import path from "path"; 
 import { log } from "console";
-
+export async function main (gravedad, pl_name, ano, orb) {
 const openai = new OpenAI();
 openai.apiKey = "sk-o2xcw1mIlT1fyKFo4WvLqatHR3RkjwLVAC9bS--9kST3BlbkFJD4atLGvzKoaCK8YP9hSMZYoh0ymwv6aVnI2jYTZqAA"
 var text
-var gravedad = `0.8`
-var pl_name = `venus`
-var año = `2013`
-var orb = `1.3`
+ gravedad = `0.8`
+ pl_name = `venus`
+ ano = `2013`
+ orb = `1.3`
 
 
 //text
@@ -23,7 +23,7 @@ var orb = `1.3`
             "type": "text",
             "text": `
               Eres un humano viviendo en la primera colonia del planeta ` + pl_name + ` en el siglo 23,
-              en un texto corto, al estilo de una bitacora, en no mas de un minuto de lectura, el planeta fue descubierto en` + año + `
+              en un texto corto, al estilo de una bitacora, en no mas de un minuto de lectura, el planeta fue descubierto en` + ano + `
               explica como afecta que la gravedad sea `+ gravedad +` veces que la de la tierra, 
               que los años duran `+ orb +`veces que los de la tierra y como solucionais estos problemas.
             `
@@ -51,3 +51,4 @@ async function audio(texto) {
 }
 console.log(text)
 audio(text);
+}
