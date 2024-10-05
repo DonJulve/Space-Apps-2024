@@ -6,7 +6,7 @@
       <input type="text" id="distanciaTierra" [(ngModel)]="distanciaTierra" name="distanciaTierra" placeholder="Distancia de la Tierra (m)">
       <input type="text" id="proporcionGravedad" [(ngModel)]="proporcionGravedad" name="proporcionGravedad" placeholder="Aumento gravedad terrestre">
       <button type="submit">Buscar exoplanetas</button>
-      <button (click)="limpiar()">Limpiar parámetros</button>
+      <button (click)="limpiar()" type="button">Limpiar parámetros</button>
     </form>
   </div>
 </div>
@@ -16,17 +16,28 @@
 </button>
 
 <div class="bitacora">
-  <img src="assets/Bitacora.png" alt="Bitacora"/>
+  <button (click)="reproducirAudio()">
+    <img src="assets/Bitacora.png" alt="Bitacora"/>
+  </button>
 </div>
 
 <div class="ranking">
   <button class="arrow left" (click)="moveLeft()">&lt;</button>
-  <span class="center-text">Tierra</span>
+  <span class="center-text">{{currentIndex+1}} {{ exoplanetas[currentIndex]?.name || 'Tierra' }}</span>
   <button class="arrow right" (click)="moveRight()">&gt;</button>
 </div>
 
+<audio #audioPlayer></audio>
 
 <div class="iframe-container">
-  <iframe src="https://eyes.nasa.gov/apps/exo/#/planet/HD_21520_b" title="" class="smd-iframe-iframe margin-left-auto margin-right-auto border-0" allow="fullscreen"></iframe>
+  <iframe [src]="url" title="Exoplaneta" class="smd-iframe-iframe margin-left-auto margin-right-auto border-0" allowfullscreen></iframe>
 </div>
 
+<!-- Información del Exoplaneta -->
+<div class="info-planet" *ngIf="exoplanetas[currentIndex]">
+  <h3>{{ exoplanetas[currentIndex].name }}</h3>
+  <p><strong>Habitabilidad:</strong> {{ exoplanetas[currentIndex].habitabilidad * 100 | number: '1.0-0' }}%</p>
+
+  <p><strong>Distancia a la estrella:</strong> {{ exoplanetas[currentIndex].distanceToStar | number: '1.0-0' }} m</p>
+  <p><strong>Duración del año:</strong> {{ exoplanetas[currentIndex].yearDuration | number: '1.3-3' }} años terrestres</p>
+</div>
