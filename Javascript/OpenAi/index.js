@@ -38,7 +38,7 @@ var orb = `1.3`
 
 async function audio(texto) {
   //Audio
-  const speechFile = path.resolve("./SpaceApps 2024/speech.mp3");
+  const speechFile = path.resolve("./speech.mp3");
 
   const mp3 = await openai.audio.speech.create({
     model: "tts-1",
@@ -51,4 +51,3 @@ async function audio(texto) {
 }
 console.log(text)
 audio(text);
-path ="./SpaceApps 2024/speech.mp3"
