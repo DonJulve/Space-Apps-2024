@@ -51,4 +51,4 @@ async function audio(texto) {
 }
 console.log(text)
 audio(text);
-var path ="./SpaceApps 2024/speech.mp3"
+path ="./SpaceApps 2024/speech.mp3"
