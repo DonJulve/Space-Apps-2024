@@ -21,6 +21,7 @@ export class PlanetasComponent {
   exoplanetas: any[] = [];
   currentIndex = 0; // Índice del exoplaneta actual
   url: SafeResourceUrl; // Cambiar el tipo a SafeResourceUrl
+  errorMessage: string | null = null;
 
   @ViewChild('audioPlayer') audioPlayer!: ElementRef<HTMLAudioElement>; // Referencia al elemento de audio
 
@@ -40,7 +41,7 @@ export class PlanetasComponent {
       { habitabilidad: 0.07178902357803207, name: "KELT-24_b", gravity: 6.022430448888376E-10, distanceToStar: 96.5173, yearDuration: 0.01519915937029432 },
       { habitabilidad: 0.07249131948831378, name: "HAT-P-22_b", gravity: 3.1514602987262875E-10, distanceToStar: 81.7647, yearDuration: 0.008794579055441478 },
       { habitabilidad: 0.07265450016998065, name: "HD_118203_b", gravity: 2.935006333114788E-10, distanceToStar: 92.2589, yearDuration: 0.016796684462696783 },
-      { habitabilidad: 0.07329950577747346, name: "HD 189733 b", gravity: 1.493207621388934E-10, distanceToStar: 19.7638, yearDuration: 0.0060741291444216285 }
+      { habitabilidad: 0.07329950577747346, name: "HD_189733_b", gravity: 1.493207621388934E-10, distanceToStar: 19.7638, yearDuration: 0.0060741291444216285 }
     ];
     this.updateExoplanet(); // Llama al método para establecer la URL inicial
   }
@@ -57,9 +58,28 @@ export class PlanetasComponent {
   }
 
   submit() {
+    if (!this.lente || !this.habitabilidad || !this.distanciaTierra || !this.proporcionGravedad) {
+      this.errorMessage = 'Por favor, complete todos los campos antes de realizar la búsqueda.';
+      return; // Detener la ejecución si hay campos vacíos
+    }
+
+    this.errorMessage = null;
+
+    const habitabilidadInput = parseFloat(this.habitabilidad.replace(',', '.'));
+    const habitabilidadParametro = (habitabilidadInput / 100).toString();
+    this.lente = parseFloat(this.lente.replace(',', '.')).toString();
+    this.distanciaTierra = parseFloat(this.distanciaTierra.replace(',', '.')).toString();
+    this.proporcionGravedad = parseFloat(this.proporcionGravedad.replace(',', '.')).toString();
+
+    if(habitabilidadInput > 100 || habitabilidadInput < 0){
+      this.errorMessage = 'El porcentaje de habitabilidad es incorrecto';
+      return;
+    }
+
+
     const data = {
       diametroLente: this.lente,
-      habitabilidad: this.habitabilidad,
+      habitabilidad: habitabilidadParametro,
       distanciaTierra: this.distanciaTierra,
       proporcionGravedad: this.proporcionGravedad
     };
@@ -67,9 +87,21 @@ export class PlanetasComponent {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
-
-    // Aquí puedes realizar la solicitud HTTP para enviar los datos
-    // Ejemplo: this.http.post('tu_url_api', data, { headers }).subscribe(...);
+    this.http.post<any>('http://localhost:8080/getExoplanets', data, { headers: headers })
+      .subscribe(
+        response => {
+          this.exoplanetas = response.map((exoplanet: any) => {
+            return {
+              ...exoplanet,
+              name: exoplanet.name.replace(/ /g, '_') // Reemplaza espacios por guiones bajos
+            };
+          });
+          this.updateExoplanet();
+        },
+        error => {
+          this.errorMessage = 'Error, intente de nuevo.';
+        }
+      );
   }
 
   moveLeft() {
@@ -90,7 +122,6 @@ export class PlanetasComponent {
     const currentExoplanet = this.exoplanetas[this.currentIndex];
 
     if (currentExoplanet) {
-      console.log(`Current Exoplanet: ${currentExoplanet.name}`); // Loguear el nombre del exoplaneta actual
       this.url = this.sanitizer.bypassSecurityTrustResourceUrl(`https://eyes.nasa.gov/apps/exo/#/planet/${currentExoplanet.name}`);
     }
   }
@@ -110,15 +141,12 @@ export class PlanetasComponent {
         audioFile = 'assets/audio3.mp3';
         break;
       default:
-        console.log('No hay audio para este exoplaneta.');
         return; // Salir si no hay audio correspondiente
     }
 
     if (this.audioPlayer && this.audioPlayer.nativeElement) {
       this.audioPlayer.nativeElement.src = audioFile; // Asignar la ruta del audio
       this.audioPlayer.nativeElement.play(); // Reproducir el audio
-    } else {
-      console.error('El audioPlayer no está inicializado');
     }
   }
 }

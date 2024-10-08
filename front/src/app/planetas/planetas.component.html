@@ -1,12 +1,15 @@
 <div *ngIf="menuVisible" class="menu" [ngClass]="{'slide-in': menuVisible}">
   <div class="parametros-container">
     <form (ngSubmit)="submit()">
-      <input type="text" id="lente" [(ngModel)]="lente" name="lente" placeholder="Amplitud de la lente (m)">
+      <input type="text" id="lente" [(ngModel)]="lente" name="lente" placeholder="Amplitud de la lente">
       <input type="text" id="habitabilidad" [(ngModel)]="habitabilidad" name="habitabilidad" placeholder="% de habitabilidad">
-      <input type="text" id="distanciaTierra" [(ngModel)]="distanciaTierra" name="distanciaTierra" placeholder="Distancia de la Tierra (m)">
+      <input type="text" id="distanciaTierra" [(ngModel)]="distanciaTierra" name="distanciaTierra" placeholder="Distancia de la Tierra">
       <input type="text" id="proporcionGravedad" [(ngModel)]="proporcionGravedad" name="proporcionGravedad" placeholder="Aumento gravedad terrestre">
       <button type="submit">Buscar exoplanetas</button>
       <button (click)="limpiar()" type="button">Limpiar parámetros</button>
+      <div *ngIf="errorMessage" style="margin-top: 10px;">
+        {{ errorMessage }}
+      </div>
     </form>
   </div>
 </div>
@@ -15,15 +18,14 @@
   <img src="assets/Telescopio.png" alt="Telescopio"/>
 </button>
 
-<div class="bitacora">
-  <button (click)="reproducirAudio()">
-    <img src="assets/Bitacora.png" alt="Bitacora"/>
-  </button>
-</div>
+
+<button class="bitacora" (click)="reproducirAudio()">
+  <img src="assets/Bitacora.png" alt="Bitacora"/>
+</button>
 
 <div class="ranking">
   <button class="arrow left" (click)="moveLeft()">&lt;</button>
-  <span class="center-text">{{currentIndex+1}} {{ exoplanetas[currentIndex]?.name || 'Tierra' }}</span>
+  <span class="center-text">{{currentIndex+1}} {{ exoplanetas[currentIndex]?.name }}</span>
   <button class="arrow right" (click)="moveRight()">&gt;</button>
 </div>
 
