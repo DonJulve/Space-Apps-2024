@@ -18,7 +18,14 @@ This repository contains the repository of the project presented by the team "eq
   
 The OpenAI API was also used for generating the texts of the logbook and also use to generate the audio of it.
 
-## How to run the App
+## How to run the App (Automatically)
+
+```bash
+cd <route_to_project>
+./deploy.sh
+```
+
+## How to run the App (Manually)
 
 ### Frontend
 
@@ -34,4 +41,11 @@ ng serve
 cd <route_to_project>/backend
 ./gradlew bootRun
 
+```
+
+## How to clean the project deployment
+
+```bash
+cd <route_to_project>
+./cleanup.sh
 ```

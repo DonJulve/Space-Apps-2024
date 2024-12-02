@@ -78,10 +78,10 @@ export class PlanetasComponent {
 
 
     const data = {
-      diametroLente: this.lente,
-      habitabilidad: habitabilidadParametro,
-      distanciaTierra: this.distanciaTierra,
-      proporcionGravedad: this.proporcionGravedad
+      diametroLente: parseFloat(this.lente),
+      habitabilidad: parseFloat(habitabilidadParametro),
+      distanciaTierra: parseFloat(this.distanciaTierra),
+      proporcionGravedad: parseFloat(this.proporcionGravedad)
     };
 
     const headers = new HttpHeaders({
